@@ -1,5 +1,6 @@
 ﻿using Knapsack;
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -14,6 +15,7 @@ namespace SYAP_prac_27._02._2020
         int massColumnIndex;
         int costsColumnIndex;
         int nameColumnIndex;
+        int numberColumnIndex;
 
         public fKnapsack()
         {
@@ -27,6 +29,8 @@ namespace SYAP_prac_27._02._2020
         }
         private void InitializeDgvItems()
         {
+            numberColumnIndex = dgvItems.Columns.Add("number", "№");
+            dgvItems.Columns[numberColumnIndex].Width = 20;
             nameColumnIndex = dgvItems.Columns.Add("name", "Название предмета");
             massColumnIndex = dgvItems.Columns.Add("mass", "Вес");
             costsColumnIndex = dgvItems.Columns.Add("costs", "Стоимость");
@@ -247,6 +251,68 @@ namespace SYAP_prac_27._02._2020
             }
             Checkdgv();
             CheckButton();
+        }
+
+        private void btLoad_Click(object sender, EventArgs e)
+        {
+            int badCount = 0;
+            var dlg = new OpenFileDialog();
+            dlg.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+            if (dlg.ShowDialog() != DialogResult.OK) { return; }
+            try
+            {
+                using (var sr = new StreamReader(dlg.FileName))
+                {
+                    string str;
+                    string[] data;
+                    string name;
+                    string mass;
+                    string costs;
+                    int trash;
+                    while (!sr.EndOfStream)
+                    {
+                        try
+                        {
+                            str = sr.ReadLine();
+                            data = str.Split(' ');
+                            name = data[0];
+                            for (int i = 0; i < data.Length - 2; i++)
+                            {
+                                name += " " + data[i];
+                            }
+                            if (!int.TryParse(data[data.Length - 1], out trash) || !int.TryParse(data[data.Length - 2], out trash))
+                            {
+                                throw new Exception("Не парсится число");
+                            }
+                            mass = data[data.Length - 1];
+                            costs = data[data.Length - 2];
+                        }
+                        catch (Exception el)
+                        {
+                            badCount++;
+                            continue;
+                        }
+                        int indexLastRow = dgvItems.Rows.Add();
+                        dgvItems.Rows[indexLastRow].Cells[massColumnIndex].Value = mass;
+                        dgvItems.Rows[indexLastRow].Cells[costsColumnIndex].Value = costs;
+                        dgvItems.Rows[indexLastRow].Cells[nameColumnIndex].Value = name;
+                    }
+                }
+            }
+            catch (Exception el)
+            {
+                MessageBox.Show($"Ошибка: {el.Message}");
+                return;
+            }
+            MessageBox.Show($"Не прочитано строчек: {badCount}");
+        }
+
+        private void dgvItems_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
+        {
+            for (int i = e.RowIndex; i < dgvItems.Rows.Count; i++)
+            {
+                dgvItems.Rows[i].Cells[numberColumnIndex].Value = i + 1;
+            }
         }
     }
 

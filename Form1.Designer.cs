@@ -37,6 +37,7 @@
             this.button2 = new System.Windows.Forms.Button();
             this.dgvItems = new System.Windows.Forms.DataGridView();
             this.epMain = new System.Windows.Forms.ErrorProvider(this.components);
+            this.btLoad = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvItems)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.epMain)).BeginInit();
             this.SuspendLayout();
@@ -72,6 +73,7 @@
             // 
             // comboBox1
             // 
+            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Location = new System.Drawing.Point(71, 14);
             this.comboBox1.Name = "comboBox1";
@@ -109,17 +111,29 @@
             this.dgvItems.TabIndex = 8;
             this.dgvItems.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvItems_CellContentClick);
             this.dgvItems.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvItems_CellEndEdit);
+            this.dgvItems.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.dgvItems_RowsAdded);
             this.dgvItems.Validating += new System.ComponentModel.CancelEventHandler(this.dgvItems_Validating);
             // 
             // epMain
             // 
             this.epMain.ContainerControl = this;
             // 
+            // btLoad
+            // 
+            this.btLoad.Location = new System.Drawing.Point(12, 41);
+            this.btLoad.Name = "btLoad";
+            this.btLoad.Size = new System.Drawing.Size(173, 23);
+            this.btLoad.TabIndex = 9;
+            this.btLoad.Text = "Загрузить из файла";
+            this.btLoad.UseVisualStyleBackColor = true;
+            this.btLoad.Click += new System.EventHandler(this.btLoad_Click);
+            // 
             // fKnapsack
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(482, 275);
+            this.Controls.Add(this.btLoad);
             this.Controls.Add(this.dgvItems);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.label3);
@@ -146,6 +160,7 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.DataGridView dgvItems;
         private System.Windows.Forms.ErrorProvider epMain;
+        private System.Windows.Forms.Button btLoad;
     }
 }
 
