@@ -38,6 +38,7 @@
             this.dgvItems = new System.Windows.Forms.DataGridView();
             this.epMain = new System.Windows.Forms.ErrorProvider(this.components);
             this.btLoad = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvItems)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.epMain)).BeginInit();
             this.SuspendLayout();
@@ -128,11 +129,22 @@
             this.btLoad.UseVisualStyleBackColor = true;
             this.btLoad.Click += new System.EventHandler(this.btLoad_Click);
             // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(191, 41);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(75, 23);
+            this.button3.TabIndex = 10;
+            this.button3.Text = "Очистить";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
             // fKnapsack
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(482, 275);
+            this.Controls.Add(this.button3);
             this.Controls.Add(this.btLoad);
             this.Controls.Add(this.dgvItems);
             this.Controls.Add(this.button2);
@@ -161,6 +173,7 @@
         private System.Windows.Forms.DataGridView dgvItems;
         private System.Windows.Forms.ErrorProvider epMain;
         private System.Windows.Forms.Button btLoad;
+        private System.Windows.Forms.Button button3;
     }
 }
 

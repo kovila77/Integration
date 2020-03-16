@@ -63,7 +63,7 @@ namespace SYAP_prac_27._02._2020
                 if (answer[i])
                 {
                     dgvItems.Rows[i].Cells[takeColumnIndex].Value = "Берём";
-                    answerText += $"{i + 1},";
+                    answerText += dgvItems.Rows[i].Cells[numberColumnIndex].Value.ToString() + ",";
                 }
                 else
                 {
@@ -73,7 +73,10 @@ namespace SYAP_prac_27._02._2020
             dgvItems.Columns[takeColumnIndex].Visible = true;
             if (answerText.Length > 1)
                 answerText = answerText.Substring(0, answerText.Length - 1);
-            MessageBox.Show("Нужно взять следующие предметы: " + answerText);
+            if (answer.Length > 0)
+                MessageBox.Show("Нужно взять следующие предметы: " + answerText);
+            else
+                MessageBox.Show("Предметы не поместились");
         }
 
         private void getColumnsDGV(out int[] mass, out int[] costs)
@@ -93,8 +96,7 @@ namespace SYAP_prac_27._02._2020
         }
 
         private void Form1_Load(object sender, EventArgs e)
-        {
-        }
+        { }
 
         private void button2_Click(object sender, EventArgs e)
         {
@@ -117,6 +119,11 @@ namespace SYAP_prac_27._02._2020
                 MessageBox.Show(res);
                 return;
             }
+            catch
+            {
+                MessageBox.Show("Выбрана некорректная библиотека, неизвестная ошибка");
+                return;
+            }
             foreach (var t in types)
             {
                 if (t.GetInterface("ISolver") == null)
@@ -127,8 +134,11 @@ namespace SYAP_prac_27._02._2020
                 if (constr != null)
                 {
                     var solver = constr.Invoke(new object[0]) as ISolver;
-                    if (solver != null) comboBox1.Items.Add(new ListBoxItem(solver));
-                    return;
+                    if (solver != null)
+                    {
+                        comboBox1.Items.Add(new ListBoxItem(solver));
+                        return;
+                    }
                 }
             }
             MessageBox.Show("В библиотеке нед подходящего класса!");
@@ -228,15 +238,17 @@ namespace SYAP_prac_27._02._2020
 
         private void dgvItems_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
+
             dgvItems.Columns[takeColumnIndex].Visible = false;
             if (!(e.ColumnIndex == massColumnIndex || e.ColumnIndex == costsColumnIndex))
             {
                 Checkdgv(); return;
             }
             DataGridViewCell cell = dgvItems[e.ColumnIndex, e.RowIndex];
-            if (string.IsNullOrWhiteSpace((string)cell.Value))
+            if (string.IsNullOrWhiteSpace(cell.Value as string))
             {
-                cell.ErrorText = "Пустое значение!";
+                if ((e.RowIndex != dgvItems.Rows.Count - 1))
+                    cell.ErrorText = "Пустое значение!";
             }
             else
             {
@@ -276,16 +288,17 @@ namespace SYAP_prac_27._02._2020
                             str = sr.ReadLine();
                             data = str.Split(' ');
                             name = data[0];
-                            for (int i = 0; i < data.Length - 2; i++)
+                            for (int i = 1; i < data.Length - 2; i++)
                             {
                                 name += " " + data[i];
                             }
                             if (!int.TryParse(data[data.Length - 1], out trash) || !int.TryParse(data[data.Length - 2], out trash))
                             {
-                                throw new Exception("Не парсится число");
+                                badCount++;
+                                continue;
                             }
-                            mass = data[data.Length - 1];
-                            costs = data[data.Length - 2];
+                            mass = data[data.Length - 2];
+                            costs = data[data.Length - 1];
                         }
                         catch (Exception el)
                         {
@@ -313,6 +326,13 @@ namespace SYAP_prac_27._02._2020
             {
                 dgvItems.Rows[i].Cells[numberColumnIndex].Value = i + 1;
             }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            dgvItems.Rows.Clear();
+            dgvItems.Tag = false;
+            CheckButton();
         }
     }
 
